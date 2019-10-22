@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dating.API.Models;
 using DatingApp.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dating.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ValuesController : ControllerBase
@@ -28,33 +30,23 @@ namespace Dating.API.Controllers
 
         }
 
-//Now you can remove thiss empty constructor
-        // public ValuesController()
-        // {
-           
-        // }
-
         [HttpGet]
         public async Task<IActionResult> GetValues()
-       // public List<Value> Get()
         {
             var values =await _context.Values.ToListAsync();
             return Ok(values);
-           // Value value = new Value();
-            //value.Id = 1;
-            //value.Name = "Fahad";
-
-            //List<Value> values = new List<Value>();
-            //values.Add(value);
-
-            //return values;
-
         }
+         [AllowAnonymous]
          [HttpGet("{id}")]
          public async Task<IActionResult> GetValues(int id)
          {
              var value =await _context.Values.FirstOrDefaultAsync(x =>x.Id == id);
-             return Ok(value);//yaha pay usny value likha hai but ma likhu to error
+             return Ok(value);
+         }
+         [HttpPost]
+         public void Post([FromBody] string Value)
+         {
+             
          }
         
     }
