@@ -11,7 +11,7 @@ export class AlertifyService {
       if (e) {
         okCallback();
       } else {
-        //here is your else code
+        // here is your else code
       }
     });
   }

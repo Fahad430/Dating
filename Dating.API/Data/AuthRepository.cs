@@ -15,7 +15,7 @@ namespace Dating.API.Data
         }
         public async Task<User> Login(string username, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == username);
+            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.Name == username);
 
             if (user == null)
                 return null;
@@ -45,7 +45,6 @@ namespace Dating.API.Data
         {
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
@@ -53,9 +52,6 @@ namespace Dating.API.Data
             await _context.SaveChangesAsync();
 
             return user;
-
-
-
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
